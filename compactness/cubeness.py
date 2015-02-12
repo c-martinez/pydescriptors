@@ -4,7 +4,8 @@ import numpy as np
 from moments import immoment3D
 from helpers import rotate3D
 
-def int_max_abs(X,Y,Z):
+def __int_max_abs__(X,Y,Z):
+    # \sss max(|x|,|y|,|z|) dx dy dz
     # X, Y, Z must be centred
     XYZ = np.vstack([ X,Y,Z ])
     max_abs = np.absolute(XYZ).max(axis=0)
@@ -35,9 +36,10 @@ def cubeness_mz(X,Y,Z,nSteps=100):
     for i,rx in enumerate(angles):
         for j,ry in enumerate(angles):
             Xr,Yr,Zr = rotate3D(X_,Y_,Z_,rx,ry)
-            fxy[i,j] = int_max_abs(Xr,Yr,Zr)
+            fxy[i,j] = __int_max_abs__(Xr,Yr,Zr)
 
     vol = m000
     min_fxy = fxy.min()
     c = (3/8) * vol**(4/3) / min_fxy
     return c,fxy
+
