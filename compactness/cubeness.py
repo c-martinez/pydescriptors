@@ -3,7 +3,7 @@ from __future__ import division
 import numpy as np
 # from numpy.testing import assert_almost_equal
 from moments import immoment3D
-from helpers import rotate3D
+from helpers import rotate3D, recenter
 
 def __int_max_abs__(X,Y,Z):
     """Calculate the triple integral maximum absolute value of a given 3D object.
@@ -35,21 +35,8 @@ def cubeness_mz(X,Y,Z,nSteps=100):
     Returns:
     c -- The cubeness_mz value of the given object.
     """
-    m000 = immoment3D(X,Y,Z,0,0,0)
-    m100 = immoment3D(X,Y,Z,1,0,0)
-    m010 = immoment3D(X,Y,Z,0,1,0)
-    m001 = immoment3D(X,Y,Z,0,0,1)
+    X_,Y_,Z_ = recenter(X,Y,Z)
 
-    # Find centroid
-    cx = m100/m000
-    cy = m010/m000
-    cz = m001/m000
-
-    # Recentering
-    X_ = X - cx
-    Y_ = Y - cy
-    Z_ = Z - cz
-    
     # TODO: assert centorid is close to 0,0,0 ?
     # assert_almost_equal(immoment3D(X_,Y_,Z_,1,0,0),0,4) # X
     # assert_almost_equal(immoment3D(X_,Y_,Z_,0,1,0),0,4) # Y
@@ -63,10 +50,44 @@ def cubeness_mz(X,Y,Z,nSteps=100):
             Xr,Yr,Zr = rotate3D(X_,Y_,Z_,rx,ry)
             fxy[i,j] = __int_max_abs__(Xr,Yr,Zr)
 
-    vol = m000
+    vol = immoment3D(X,Y,Z,0,0,0)
     min_fxy = fxy.min()
     c = (3/8) * vol**(4/3) / min_fxy
     return c
 
-def cubeness_fit():
-    pass
+def cubeness_fit(X,Y,Z,nSteps=100):
+    X_,Y_,Z_ = recenter(X,Y,Z)
+
+    # Create fit cube of same volume as object
+    vol_s = immoment3D(X,Y,Z,0,0,0)
+    a_s_2 = np.round(vol_s**(1/3))  # Side of cube with equivalent volume
+    b = np.ones((a_s_2,a_s_2,a_s_2))
+
+    bX,bY,bZ = b.nonzero()
+    bX,bY,bZ = recenter(bX,bY,bZ)
+
+    XYZ_set = set([ (x,y,z) for x,y,z in zip(X_,Y_,Z_) ])
+
+    angles = np.linspace(0,np.pi,nSteps)
+    fxy = np.zeros((nSteps,nSteps))
+    # TODO: Pythonize these for loops (at the cost of readability?)
+    for i,rx in enumerate(angles):
+        for j,ry in enumerate(angles):
+            bXr,bYr,bZr = rotate3D(bX,bY,bZ,rx,ry)
+
+            br_set = set([ (x,y,z) for x,y,z in zip(bXr,bYr,bZr) ])
+
+            uXYZ = br_set.union(XYZ_set)
+            iXYZ = br_set.intersection(XYZ_set)
+
+            uXYZ = np.array([ np.array([x,y,z]) for x,y,z in uXYZ ])
+            iXYZ = np.array([ np.array([x,y,z]) for x,y,z in iXYZ ])
+
+            vol_u = immoment3D(uXYZ[:,0],uXYZ[:,1],uXYZ[:,2],0,0,0)
+            vol_i = immoment3D(iXYZ[:,0],iXYZ[:,1],iXYZ[:,2],0,0,0)
+
+            fxy[i,j] = vol_i / vol_u
+
+    c = fxy.max()
+    return c
+
