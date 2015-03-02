@@ -23,6 +23,18 @@ def __int_max_abs__(X,Y,Z):
     sss = max_abs.sum()
     return sss
 
+def __int_max_abs_beta__(X,Y,Z,beta):
+    """.
+    """
+    # \iiint max(|x|,|y|,|z|) dx dy dz
+    # X, Y, Z must be centred
+    XYZ = np.vstack([ X,Y,Z ]).astype(np.double)
+    max_abs = np.absolute(XYZ).max(axis=0)
+    max_abs_beta = max_abs[max_abs.nonzero()]**beta
+    
+    sss = max_abs_beta.sum()
+    return sss
+
 def cubeness_mz(X,Y,Z,nSteps=100):
     """Computes the cubeness of a 3D object by method presented in
     paper: Measuring Cubeness of 3D Shapes by Martinez-Ortiz and Zunic.
@@ -74,6 +86,9 @@ def cubeness_fit(X,Y,Z,nSteps=100):
     for i,rx in enumerate(angles):
         for j,ry in enumerate(angles):
             bXr,bYr,bZr = rotate3D(bX,bY,bZ,rx,ry)
+            bXr = np.floor(bXr)
+            bYr = np.floor(bYr)
+            bZr = np.floor(bZr)
 
             br_set = set([ (x,y,z) for x,y,z in zip(bXr,bYr,bZr) ])
 
@@ -89,5 +104,24 @@ def cubeness_fit(X,Y,Z,nSteps=100):
             fxy[i,j] = vol_i / vol_u
 
     c = fxy.max()
+    return c
+
+def cubeness_mz_beta(X,Y,Z,beta,nSteps=100):
+    assert(beta>-3)
+    X_,Y_,Z_ = recenter(X,Y,Z)
+    
+    angles = np.linspace(0,np.pi,nSteps)
+    fxy = np.zeros((nSteps,nSteps))
+    # TODO: Pythonize these for loops (at the cost of readability?)
+    for i,rx in enumerate(angles):
+        for j,ry in enumerate(angles):
+            Xr,Yr,Zr = rotate3D(X_,Y_,Z_,rx,ry)
+            fxy[i,j] = __int_max_abs_beta__(Xr,Yr,Zr,beta)
+
+    vol = immoment3D(X,Y,Z,0,0,0)
+    if beta>=0:
+        c =   3/((2**beta) * (beta+3)) * vol**((beta+3)/3) / fxy.min()
+    else:
+        c =   ((2**beta) * (beta+3))/3 * fxy.min()   / vol**((beta+3)/3)
     return c
 
