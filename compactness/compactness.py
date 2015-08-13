@@ -11,12 +11,12 @@ def compactness_bribiesca(X, Y, Z):
     assert Y.shape[0] == Z.shape[0]
 
     n = X.shape[0]
-    A = __findArea__(X, Y, Z)
+    A = _findArea(X, Y, Z)
     c = (n - (A / 6)) / (n - n ** (2 / 3))
     return c
 
 
-def __findArea__(X, Y, Z):
+def _findArea(X, Y, Z):
     voxels = set()
     for x, y, z in zip(X, Y, Z):
         voxels.add((x, y, z))
@@ -56,7 +56,7 @@ def compactness_hzweighted(X, Y, Z, beta):
     mu000 = immoment3D(X_, Y_, Z_, 0, 0, 0)
 
     # int int int ( x^2 + y^2 +z^2 ) ^ beta dx dy dz
-    tri_integral = __triintegral__(X_, Y_, Z_, beta)
+    tri_integral = _triintegral(X_, Y_, Z_, beta)
 
     if beta >= 0:
         # c = (3 / ( 2 * beta + 3)) * ...
@@ -82,6 +82,6 @@ def compactness_hzweighted(X, Y, Z, beta):
     return c
 
 
-def __triintegral__(X_, Y_, Z_, beta):
+def _triintegral(X_, Y_, Z_, beta):
     xyz_beta = (X_ ** 2 + Y_ ** 2 + Z_ ** 2) ** beta
     return xyz_beta.sum()

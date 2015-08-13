@@ -6,7 +6,7 @@ from moments import immoment3D
 from helpers import rotate3D, recenter
 
 
-def __int_max_abs__(X, Y, Z):
+def _int_max_abs(X, Y, Z):
     """Calculate the triple integral maximum absolute value of a given 3D object.
 
     Keyword arguments:
@@ -25,7 +25,7 @@ def __int_max_abs__(X, Y, Z):
     return sss
 
 
-def __int_max_abs_beta__(X, Y, Z, beta):
+def _int_max_abs_beta(X, Y, Z, beta):
     """.
     """
     # \iiint max(|x|,|y|,|z|) dx dy dz
@@ -63,7 +63,7 @@ def cubeness_mz(X, Y, Z, nSteps=100):
     for i, rx in enumerate(angles):
         for j, ry in enumerate(angles):
             Xr, Yr, Zr = rotate3D(X_, Y_, Z_, rx, ry)
-            fxy[i, j] = __int_max_abs__(Xr, Yr, Zr)
+            fxy[i, j] = _int_max_abs(Xr, Yr, Zr)
 
     vol = immoment3D(X, Y, Z, 0, 0, 0)
     min_fxy = fxy.min()
@@ -121,7 +121,7 @@ def cubeness_mz_beta(X, Y, Z, beta, nSteps=100):
     for i, rx in enumerate(angles):
         for j, ry in enumerate(angles):
             Xr, Yr, Zr = rotate3D(X_, Y_, Z_, rx, ry)
-            fxy[i, j] = __int_max_abs_beta__(Xr, Yr, Zr, beta)
+            fxy[i, j] = _int_max_abs_beta(Xr, Yr, Zr, beta)
 
     vol = immoment3D(X, Y, Z, 0, 0, 0)
     if beta >= 0:
