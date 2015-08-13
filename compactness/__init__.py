@@ -1,1 +1,1 @@
-__all__ = [ 'compactness', 'cubeness', 'helpers', 'moments' ];
+__all__ = ['compactness', 'cubeness', 'helpers', 'moments']
