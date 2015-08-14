@@ -1,5 +1,6 @@
-from compactness.cubeness import cubeness_mz, cubeness_fit
-from compactness.helpers import getSphere
+from pydescriptors.cubeness import mz as cubeness_mz
+from pydescriptors.cubeness import fit as cubeness_fit
+from pydescriptors.helpers import getSphere
 
 import numpy as np
 

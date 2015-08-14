@@ -1,6 +1,6 @@
-import numpy as np
+import numpy as _np
 
-from moments import immoment3D
+from moments import _immoment3D
 
 
 def getSphere(side):
@@ -13,11 +13,11 @@ def getSphere(side):
     Returns:
     A (side,side,side) shaped matrix of zeros and ones.
     """
-    volume = np.zeros((side, side, side))
+    volume = _np.zeros((side, side, side))
     r = side / 2
-    Xs, Ys = np.meshgrid(np.arange(-r, r), np.arange(-r, r))
-    for k, z in enumerate(np.arange(-r, r)):
-        volume[:, :, k] = np.sqrt(Xs ** 2 + Ys ** 2 + z ** 2) < r
+    Xs, Ys = _np.meshgrid(_np.arange(-r, r), _np.arange(-r, r))
+    for k, z in enumerate(_np.arange(-r, r)):
+        volume[:, :, k] = _np.sqrt(Xs ** 2 + Ys ** 2 + z ** 2) < r
     return volume
 
 
@@ -32,28 +32,28 @@ def rotate3D(X, Y, Z, rx, ry):
     Returns:
     X,Y,Z coordinates of the rotated voxels.
     """
-    R = np.eye(3)
-    Rx = np.array([[1, 0, 0],
-                   [0, np.cos(rx), -np.sin(rx)],
-                   [0, np.sin(rx),  np.cos(rx)]])
-    Ry = np.array([[np.cos(ry), 0, np.sin(ry)],
+    R = _np.eye(3)
+    Rx = _np.array([[1, 0, 0],
+                   [0, _np.cos(rx), -_np.sin(rx)],
+                   [0, _np.sin(rx),  _np.cos(rx)]])
+    Ry = _np.array([[_np.cos(ry), 0, _np.sin(ry)],
                    [0, 1, 0],
-                   [-np.sin(ry), 0, np.cos(ry)]])
-    R = np.dot(R, Rx)
-    R = np.dot(R, Ry)
+                   [-_np.sin(ry), 0, _np.cos(ry)]])
+    R = _np.dot(R, Rx)
+    R = _np.dot(R, Ry)
 
-    XYZ = np.vstack([X, Y, Z])
-    XYZ_ = np.dot(XYZ.T, R)
+    XYZ = _np.vstack([X, Y, Z])
+    XYZ_ = _np.dot(XYZ.T, R)
 
     return XYZ_[:, 0], XYZ_[:, 1], XYZ_[:, 2]
 
 
 def recenter(X, Y, Z):
     # TODO: Document, write unit test
-    m000 = immoment3D(X, Y, Z, 0, 0, 0)
-    m100 = immoment3D(X, Y, Z, 1, 0, 0)
-    m010 = immoment3D(X, Y, Z, 0, 1, 0)
-    m001 = immoment3D(X, Y, Z, 0, 0, 1)
+    m000 = _immoment3D(X, Y, Z, 0, 0, 0)
+    m100 = _immoment3D(X, Y, Z, 1, 0, 0)
+    m010 = _immoment3D(X, Y, Z, 0, 1, 0)
+    m001 = _immoment3D(X, Y, Z, 0, 0, 1)
 
     # Find centroid
     cx = m100 / m000

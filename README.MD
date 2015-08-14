@@ -1,6 +1,7 @@
-# Compactness measures
+# PyDescriptors
+## Compactness shape descriptors in Python
 
-The compactness package contains Python implementation of various 2D and 3D compactness measures described in [2D and 3D Shape Descriptors](http://hdl.handle.net/10036/3026).
+This package contains Python implementation of various 2D and 3D compactness measures described in [2D and 3D Shape Descriptors](http://hdl.handle.net/10036/3026).
 
 ## Installation
 
@@ -26,9 +27,6 @@ X,Y,Z = sphere.nonzero()
 compactness_bribiesca(X,Y,Z)
 compactness_hz(X,Y,Z)
 ```
-
-## Dependencies
- - Numpy
 
 ## Testing
 Run:

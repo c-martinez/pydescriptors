@@ -1,12 +1,12 @@
 from __future__ import division
 
-from moments import immoment3D
-from helpers import recenter
+from moments import immoment3D as _immoment3D
+from helpers import recenter as _recenter
 
-import numpy as np
+import numpy as _np
 
 
-def compactness_bribiesca(X, Y, Z):
+def bribiesca(X, Y, Z):
     assert X.shape[0] == Y.shape[0]
     assert Y.shape[0] == Z.shape[0]
 
@@ -21,14 +21,14 @@ def _findArea(X, Y, Z):
     for x, y, z in zip(X, Y, Z):
         voxels.add((x, y, z))
 
-    neighbours = [np.array([-1, 0, 0]), np.array([1, 0, 0]),
-                  np.array([0, -1, 0]), np.array([0, 1, 0]),
-                  np.array([0, 0, -1]), np.array([0, 0, 1])]
+    neighbours = [_np.array([-1, 0, 0]), _np.array([1, 0, 0]),
+                  _np.array([0, -1, 0]), _np.array([0, 1, 0]),
+                  _np.array([0, 0, -1]), _np.array([0, 0, 1])]
     A = 0
     # For each voxel
     for x, y, z in zip(X, Y, Z):
         # Check its 6 possible neighbours
-        vox = np.asarray(x, y, z)
+        vox = _np.asarray(x, y, z)
         for neigh in neighbours:
             vNeigh = vox + neigh
             # If neighbour is there, contribute 0 area
@@ -37,23 +37,23 @@ def _findArea(X, Y, Z):
     return A
 
 
-def compactness_hz(X, Y, Z):
-    X_, Y_, Z_ = recenter(X, Y, Z)
+def hz(X, Y, Z):
+    X_, Y_, Z_ = _recenter(X, Y, Z)
 
-    mu000 = immoment3D(X_, Y_, Z_, 0, 0, 0)
-    mu200 = immoment3D(X_, Y_, Z_, 2, 0, 0)
-    mu020 = immoment3D(X_, Y_, Z_, 0, 2, 0)
-    mu002 = immoment3D(X_, Y_, Z_, 0, 0, 2)
+    mu000 = _immoment3D(X_, Y_, Z_, 0, 0, 0)
+    mu200 = _immoment3D(X_, Y_, Z_, 2, 0, 0)
+    mu020 = _immoment3D(X_, Y_, Z_, 0, 2, 0)
+    mu002 = _immoment3D(X_, Y_, Z_, 0, 0, 2)
 
-    c = 3 ** (5 / 3) / (5 * ((4 * np.pi) ** (2 / 3))) * \
+    c = 3 ** (5 / 3) / (5 * ((4 * _np.pi) ** (2 / 3))) * \
         (mu000 ** (5 / 3) / (mu200 + mu020 + mu002))
     return c
 
 
-def compactness_hzweighted(X, Y, Z, beta):
-    X_, Y_, Z_ = recenter(X, Y, Z)
+def hzweighted(X, Y, Z, beta):
+    X_, Y_, Z_ = _recenter(X, Y, Z)
 
-    mu000 = immoment3D(X_, Y_, Z_, 0, 0, 0)
+    mu000 = _immoment3D(X_, Y_, Z_, 0, 0, 0)
 
     # int int int ( x^2 + y^2 +z^2 ) ^ beta dx dy dz
     tri_integral = _triintegral(X_, Y_, Z_, beta)
@@ -63,7 +63,7 @@ def compactness_hzweighted(X, Y, Z, beta):
         #     (( 3 / (4 * pi)) ^ ((2 * beta) / 3)) * ...
         #     ((mu000 ^ ((2*beta + 3) / 3)) / tri_integral);
         const1 = 3 / (2 * beta + 3)
-        const2 = (3 / (4 * np.pi)) ** ((2 * beta) / 3)
+        const2 = (3 / (4 * _np.pi)) ** ((2 * beta) / 3)
         numera = mu000 ** ((2 * beta + 3) / 3)
         divis = tri_integral
     elif -1.5 < beta and beta < 0:
@@ -71,7 +71,7 @@ def compactness_hzweighted(X, Y, Z, beta):
         #     ( ( (4 * pi) / 3 ) ^ ( (2 * beta) / 3)) * ...
         #     ( tri_integral / ( mu000 ^ ((2 * beta + 3) / 3) ) );
         const1 = (2 * beta + 3) / 3
-        const2 = ((4 * np.pi) / 3) ** ((2 * beta) / 3)
+        const2 = ((4 * _np.pi) / 3) ** ((2 * beta) / 3)
         numera = tri_integral
         divis = mu000 ** ((2 * beta + 3) / 3)
     else:
