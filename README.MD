@@ -18,8 +18,9 @@ $ pip install git+git://github.com/c-martinez/compactness.git
 
 ## Usage
 ```
-from compactness.compactness import compactness_hz,compactness_bribiesca
-from compactness.helpers import getSphere
+from pydescriptors.compactness import hz as compactness_hz
+from pydescriptors.compactness import bribiesca as compactness_bribiesca
+from pydescriptors.helpers import getSphere
 
 sphere = getSphere(20)
 X,Y,Z = sphere.nonzero()

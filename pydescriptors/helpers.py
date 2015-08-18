@@ -1,7 +1,6 @@
 import numpy as _np
 
-from moments import _immoment3D
-
+from moments import immoment3D as _immoment3D
 
 def getSphere(side):
     """Create a 3D volume of sideXsideXside, where voxels representing a
