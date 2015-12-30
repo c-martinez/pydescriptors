@@ -7,13 +7,13 @@ This package contains Python implementation of various 2D and 3D compactness mea
 
 You can install this package by downloading the source and installing it with pip:
 ```
-$ wget https://github.com/c-martinez/compactness/archive/master.zip
+$ wget https://github.com/c-martinez/pydescriptors/archive/master.zip
 $ pip install master.zip
 ```
 
 Or directly from git:
 ```
-$ pip install git+git://github.com/c-martinez/compactness.git
+$ pip install git+git://github.com/c-martinez/pydescriptors.git
 ```
 
 ## Usage
