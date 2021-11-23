@@ -39,9 +39,7 @@ $ nosetests
 ## Citations
 If you use this code, please cite [2D and 3D Shape Descriptors](http://hdl.handle.net/10036/3026).
 
-
 TODO:
- - Rename package
  - Add tests for compactness
  - Add Usage
  - Add installation guide (from source)
@@ -50,3 +48,6 @@ TODO:
  - Auto testing
  - pyflakes (auto)
  - pep8 (auto)
+ - Add citation file
+ - Add to Zenodo
+ - Add TODO's as issues

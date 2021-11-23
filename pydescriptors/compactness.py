@@ -1,7 +1,7 @@
 from __future__ import division
 
-from moments import immoment3D as _immoment3D
-from helpers import recenter as _recenter
+from .moments import immoment3D as _immoment3D
+from .helpers import recenter as _recenter
 
 import numpy as _np
 

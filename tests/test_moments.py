@@ -1,12 +1,13 @@
-from compactness.moments import immoment3D
-from compactness.helpers import getSphere
+from pydescriptors.moments import immoment3D
+from pydescriptors.helpers import getSphere
 
+_testDiameter = 10
 
 def test_moment000():
     """Test the 0-th order moment. For any given shape, this should be the same
     as the volume of the object.
     """
-    volume = getSphere(50)
+    volume = getSphere(_testDiameter)
     X, Y, Z = volume.nonzero()
 
     # Moment 0,0,0 is the volume of the object
@@ -17,7 +18,7 @@ def test_moment000():
 def test_recentering():
     """Test calculating the centroid of an object.
     """
-    volume = getSphere(50)
+    volume = getSphere(_testDiameter)
     X, Y, Z = volume.nonzero()
 
     m000 = immoment3D(X, Y, Z, 0, 0, 0)

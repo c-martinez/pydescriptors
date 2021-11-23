@@ -2,9 +2,9 @@ from __future__ import division
 
 import numpy as _np
 # from numpy.testing import assert_almost_equal
-from moments import immoment3D as _immoment3D
-from helpers import rotate3D as _rotate3D
-from helpers import recenter as _recenter
+from .moments import immoment3D as _immoment3D
+from .helpers import rotate3D as _rotate3D
+from .helpers import recenter as _recenter
 
 
 def _int_max_abs(X, Y, Z):
@@ -74,10 +74,13 @@ def mz(X, Y, Z, nSteps=100):
 
 def fit(X, Y, Z, nSteps=100):
     X_, Y_, Z_ = _recenter(X, Y, Z)
+    X_ = _np.floor(X_)
+    Y_ = _np.floor(Y_)
+    Z_ = _np.floor(Z_)
 
     # Create fit cube of same volume as object
     vol_s = _immoment3D(X, Y, Z, 0, 0, 0)
-    a_s_2 = _np.round(vol_s ** (1 / 3))  # Side of cube with equivalent volume
+    a_s_2 = int(_np.round(vol_s ** (1 / 3)))  # Side of cube with equivalent volume
     b = _np.ones((a_s_2, a_s_2, a_s_2))
 
     bX, bY, bZ = b.nonzero()
@@ -103,10 +106,13 @@ def fit(X, Y, Z, nSteps=100):
             uXYZ = _np.array([_np.array([x, y, z]) for x, y, z in uXYZ])
             iXYZ = _np.array([_np.array([x, y, z]) for x, y, z in iXYZ])
 
-            vol_u = _immoment3D(uXYZ[:, 0], uXYZ[:, 1], uXYZ[:, 2], 0, 0, 0)
-            vol_i = _immoment3D(iXYZ[:, 0], iXYZ[:, 1], iXYZ[:, 2], 0, 0, 0)
+            if len(iXYZ) != 0:
+                vol_u = _immoment3D(uXYZ[:, 0], uXYZ[:, 1], uXYZ[:, 2], 0, 0, 0)
+                vol_i = _immoment3D(iXYZ[:, 0], iXYZ[:, 1], iXYZ[:, 2], 0, 0, 0)
 
-            fxy[i, j] = vol_i / vol_u
+                fxy[i, j] = vol_i / vol_u
+            else:
+                fxy[i, j] = -1
 
     c = fxy.max()
     return c
