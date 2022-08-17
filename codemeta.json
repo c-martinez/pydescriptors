@@ -1,0 +1,32 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "license": "https://spdx.org/licenses/Apache-2.0",
+    "codeRepository": "https://github.com/c-martinez/pydescriptors",
+    "dateCreated": "2015-02-04T22:03:09Z",
+    "dateModified": "2022-08-17T15:40:44.296Z",
+    "issueTracker": "https://github.com/c-martinez/pydescriptors/issues",
+    "name": "PyDescriptors",
+    "description": "Python implementation of various 2D and 3D compactness measures.",
+    "referencePublication": "http://hdl.handle.net/10036/3026",
+    "keywords": [
+        "Shape descriptor",
+        "Compactness"
+    ],
+    "programmingLanguage": [
+        "Python",
+        "Jupyter Notebook"
+    ],
+    "author": [
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0001-5565-7577",
+            "givenName": "Carlos",
+            "familyName": "Martinez Ortiz",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "eScience Center"
+            }
+        }
+    ]
+}
