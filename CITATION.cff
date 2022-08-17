@@ -1,0 +1,19 @@
+# This CITATION.cff file was generated with FAIRshare.
+# Visit https://fairdataihub.org/fairshare to learn more!
+
+abstract: Python implementation of various 2D and 3D compactness measures.
+authors:
+- affiliation: eScience Center
+  family-names: Martinez Ortiz
+  given-names: Carlos
+  orcid: 0000-0001-5565-7577
+cff-version: 1.2.0
+date-released: '2022-08-17T15:40:44.296Z'
+keywords:
+- Shape descriptor
+- Compactness
+license: Apache-2.0
+message: If you use this software, please cite it as below.
+repository-code: https://github.com/c-martinez/pydescriptors
+title: PyDescriptors
+type: software
